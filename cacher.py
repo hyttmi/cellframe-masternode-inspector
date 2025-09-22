@@ -274,7 +274,7 @@ class Cacher:
                                 "sovereign_wallet_balance": futures["sovereign_wallet_balance"].result(),
                                 "sovereign_wallet_biggest_reward": sovereign_tx_biggest_reward,
                                 "sovereign_wallet_daily_rewards": sovereign_tx_daily_rewards,
-                                "sovereign_wallet_daily_sums": sovereign_tx_daily_sums,
+                                "sovereign_wallet_all_sums_daily": sovereign_tx_daily_sums,
                                 "sovereign_wallet_earliest_reward": sovereign_tx_earliest_reward,
                                 "sovereign_wallet_latest_reward": sovereign_tx_latest_reward,
                                 "sovereign_wallet_today_rewards": sovereign_tx_today_rewards,
