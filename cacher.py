@@ -49,6 +49,8 @@ class Cacher:
 
                     # Get sovereign address from config or fetch it
                     sovereign_addr = masternode_helpers._active_networks_config[network].get("sovereign_addr")
+                    if not sovereign_addr:
+                        sovereign_addr = masternode_helpers.get_sovereign_addr(network)
 
                     # Async fetch all data
                     futures = {
