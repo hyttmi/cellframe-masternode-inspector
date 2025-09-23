@@ -5,7 +5,7 @@ import re, requests, os
 
 class MasternodeHelpers:
     def __init__(self):
-        logger.debug("Initializing MasternodeRequests...")
+        logger.debug("Initializing MasternodeHelpers...")
         self._node_address = None
         self._active_networks_config = {}
         self._get_active_networks()
@@ -19,10 +19,13 @@ class MasternodeHelpers:
                 network_name = str(net.name)
                 self._node_address = str(net.node_address) # This is the same for all networks so don't write it to network config
                 net_config = self.get_network_config(network_name)
+                sovereign_wallet_address = self.get_sovereign_addr(network_name)
                 if net_config:
                     self._active_networks_config[network_name] = net_config
                     self._active_networks_config[network_name]['native_ticker'] = str(NetFee(net).native_ticker)
-
+                if sovereign_wallet_address:
+                    self._active_networks_config[network_name]['sovereign_addr'] = sovereign_wallet_address if sovereign_wallet_address else None# node is sovereign, set this on init as well
+                    logger.debug(f"Sovereign address for {network_name}: {sovereign_wallet_address}")
         except Exception as e:
             logger.error(f"Error fetching active networks: {e}")
 
@@ -249,20 +252,19 @@ class MasternodeHelpers:
 
     def get_sovereign_addr(self, network):
         try:
-            response = utils.send_request("srv_stake", "list keys", {"net": network}, use_unix=True)
-            sovereign_addr = None
-            if response and "result" in response and response['result']:
-                entries = response['result'][0]
-                for entry in entries:
-                    if entry.get("node_addr") == self._node_address:
-                        addr = entry.get("sovereign_addr")
-                        logger.debug(f"Got addr: {addr}")
-                        if addr and addr != "null":
-                            sovereign_addr = addr
-                            logger.debug(f"Sovereign address for {network}: {sovereign_addr}")
-                            break
-            masternode_helpers._active_networks_config[network]['sovereign_addr'] = sovereign_addr
-            return sovereign_addr
+            #response = utils.send_request("srv_stake", "list keys", {"net": network}, use_unix=True)
+            #sovereign_addr = None
+            #if response and "result" in response and response['result']:
+            #    entries = response['result'][0]
+            #    for entry in entries:
+            #        if entry.get("node_addr") == self._node_address:
+            #            addr = entry.get("sovereign_addr")
+            #            logger.debug(f"Got addr: {addr}")
+            #            if addr and addr != "null":
+            #                sovereign_addr = addr
+            #                logger.debug(f"Sovereign address for {network}: {sovereign_addr}")
+            #                break
+            return "Rj7J7MiX2bWy8sNyaCLz77B2nmYYGow2ZvWCs4AxRS8rR9haVCDpkqcKRePEuRQ1kY3QDyCyrZLf6Ajurb7K6DFqYhMpTL3siWk3W6t2"
         except Exception as e:
             logger.error(f"An error occurred while fetching sovereign address for {network}: {e}", exc_info=True)
 
