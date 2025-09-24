@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from config import Config
 from packaging import version
 from command_runner import command_runner
+import platform
 
 class Utils:
     def __init__(self):
