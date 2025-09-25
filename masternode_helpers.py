@@ -20,8 +20,12 @@ class MasternodeHelpers:
                 self._node_address = str(net.node_address) # This is the same for all networks so don't write it to network config
                 net_config = self.get_network_config(network_name)
                 if net_config:
+                    net_fee = NetFee(net)
                     self._active_networks_config[network_name] = net_config
-                    self._active_networks_config[network_name]['native_ticker'] = str(NetFee(net).native_ticker)
+                    self._active_networks_config[network_name]['native_ticker'] = str(net_fee.native_ticker)
+                    self._active_networks_config[network_name]['validator_average_fee'] = str(net_fee.validator_avg_fee)
+                    self._active_networks_config[network_name]['validator_min_fee'] = str(net_fee.validator_min_fee)
+                    self._active_networks_config[network_name]['validator_max_fee'] = str(net_fee.validator_max_fee)
 
         except Exception as e:
             logger.error(f"Error fetching active networks: {e}")
