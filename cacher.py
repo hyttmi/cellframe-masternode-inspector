@@ -266,6 +266,9 @@ class Cacher:
                         "reward_wallet_yesterday_rewards": tx_yesterday_rewards,
                         "reward_wallet_smallest_reward": tx_smallest_reward,
                         "reward_wallet_total_rewards": tx_total_rewards,
+                        "validator_average_fee": masternode_helpers._active_networks_config[network].get('validator_average_fee'),
+                        "validator_min_fee": masternode_helpers._active_networks_config[network].get('validator_min_fee'),
+                        "validator_max_fee": masternode_helpers._active_networks_config[network].get('validator_max_fee'),
                     }
 
                     if sovereign_tx_history:
