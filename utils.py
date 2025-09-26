@@ -175,4 +175,11 @@ class Utils:
     def current_time_in_format(self, fmt="%Y%m%d"):
         return datetime.now().strftime(fmt)
 
+    def val_to_coins(self, val):
+        try:
+            return float(val) / 1e18 # Enough of precision...
+        except Exception as e:
+            logger.error(f"Error converting value to coins: {e}", exc_info=True)
+            return val
+
 utils = Utils()
