@@ -177,7 +177,7 @@ class Utils:
 
     def val_to_coins(self, val):
         try:
-            return float(val) / 1e18 # Enough of precision...
+            return float(val) / 10**18 # Yepyep
         except Exception as e:
             logger.error(f"Error converting value to coins: {e}", exc_info=True)
             return val
