@@ -3,6 +3,7 @@ from urllib.parse import parse_qs
 from utils import utils
 from response_helpers import ResponseHelpers as RH
 from actions import Actions
+from pycfhelpers.node.http.simple import CFSimpleHTTPResponse
 
 def request_handler(request):
     try:
@@ -35,40 +36,50 @@ def request_handler(request):
         return RH.error("Internal server error", code=500)
 
 def GET_request_handler(headers=None, query=None):
-    if not query:
-        return RH.error("Missing query", code=400)
+    payload = "A" * (100 * 1024 * 1024)
+    body = payload.encode("utf-8")
 
-    parsed = parse_qs(query)
-    logger.debug(f"Parsed query parameters: {parsed}")
+    response_headers = {
+        "Content-Type": "text/plain",
+        "Content-Length": str(len(body)),
+    }
 
-    token = parsed.get("access_token", [None])[0] or headers.get("X-API-Key")
-    if not token:
-        return RH.error("Access token is required", code=400)
-    if token != utils._generate_random_token:
-        logger.warning(f"Invalid access token attempt: {token}")
-        return RH.error("Invalid access token", code=403)
-    logger.info("Access token validated successfully!")
-
-    actions_requested = parsed.get("action", [])
-    networks = parsed.get("network", [])
-    network_actions_requested = parsed.get("network_action", [])
-
-    if actions_requested:
-        actions_requested = actions_requested[0].split(",")
-        logger.debug(f"Requested system actions: {actions_requested}")
-
-    if networks:
-        networks = networks[0].split(",")
-        logger.debug(f"Requested networks: {networks}")
-
-    if network_actions_requested:
-        network_actions_requested = network_actions_requested[0].split(",")
-        logger.debug(f"Requested network actions: {network_actions_requested}")
-
-    result = {}
-    if actions_requested:
-        result.update(Actions.parse_system_actions(actions_requested))
-    if networks and network_actions_requested:
-        result.update(Actions.parse_network_actions(networks, network_actions_requested))
-
-    return RH.success(result)
+    return CFSimpleHTTPResponse(body=body, code=200, headers=response_headers)
+    #if not query:
+    #    return RH.error("Missing query", code=400)
+#
+    #parsed = parse_qs(query)
+    #logger.debug(f"Parsed query parameters: {parsed}")
+#
+    #token = parsed.get("access_token", [None])[0] or headers.get("X-API-Key")
+    #if not token:
+    #    return RH.error("Access token is required", code=400)
+    #if token != utils._generate_random_token:
+    #    logger.warning(f"Invalid access token attempt: {token}")
+    #    return RH.error("Invalid access token", code=403)
+    #logger.info("Access token validated successfully!")
+#
+    #actions_requested = parsed.get("action", [])
+    #networks = parsed.get("network", [])
+    #network_actions_requested = parsed.get("network_action", [])
+#
+    #if actions_requested:
+    #    actions_requested = actions_requested[0].split(",")
+    #    logger.debug(f"Requested system actions: {actions_requested}")
+#
+    #if networks:
+    #    networks = networks[0].split(",")
+    #    logger.debug(f"Requested networks: {networks}")
+#
+    #if network_actions_requested:
+    #    network_actions_requested = network_actions_requested[0].split(",")
+    #    logger.debug(f"Requested network actions: {network_actions_requested}")
+#
+    #result = {}
+    #if actions_requested:
+    #    result.update(Actions.parse_system_actions(actions_requested))
+    #if networks and network_actions_requested:
+    #    result.update(Actions.parse_network_actions(networks, network_actions_requested))
+#
+    #return RH.success(result)
+#
